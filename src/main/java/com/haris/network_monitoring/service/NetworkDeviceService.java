@@ -30,4 +30,26 @@ public class NetworkDeviceService {
         return networkDeviceRepository.findById(id)
                 .orElseThrow(() -> new DeviceNotFoundException(id));
     }
+
+    public NetworkDevice updateDevice(Long id, NetworkDevice updatedDevice) {
+        NetworkDevice existingDevice = networkDeviceRepository.findById(id)
+                .orElseThrow(() -> new DeviceNotFoundException(id));
+
+        existingDevice.setName(updatedDevice.getName());
+        existingDevice.setIpAddress(updatedDevice.getIpAddress());
+        existingDevice.setHostname(updatedDevice.getHostname());
+        existingDevice.setType(updatedDevice.getType());
+        existingDevice.setStatus(updatedDevice.getStatus());
+        existingDevice.setPort(updatedDevice.getPort());
+        existingDevice.setResponseTime(updatedDevice.getResponseTime());
+
+        return networkDeviceRepository.save(existingDevice);
+    }
+
+    public void deleteDevice(Long id) {
+        NetworkDevice existingDevice = networkDeviceRepository.findById(id)
+                .orElseThrow(() -> new DeviceNotFoundException(id));
+
+        networkDeviceRepository.delete(existingDevice);
+    }
 }
