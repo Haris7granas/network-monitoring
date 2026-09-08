@@ -5,6 +5,7 @@ import com.haris.network_monitoring.entity.NetworkDevice;
 import com.haris.network_monitoring.repository.NetworkDeviceRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import com.haris.network_monitoring.exception.DeviceNotFoundException;
 
 
 
@@ -27,6 +28,6 @@ public class NetworkDeviceService {
 
     public NetworkDevice getDeviceById(Long id) {
         return networkDeviceRepository.findById(id)
-                .orElse(null);
+                .orElseThrow(() -> new DeviceNotFoundException(id));
     }
 }
