@@ -3,6 +3,7 @@ package com.haris.network_monitoring.controller;
 
 import com.haris.network_monitoring.entity.NetworkDevice;
 import com.haris.network_monitoring.service.NetworkDeviceService;
+import com.haris.network_monitoring.service.NetworkMonitoringService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PutMapping;
 import java.util.List;
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 public class NetworkDeviceController {
 
     private final NetworkDeviceService networkDeviceService;
+    private final NetworkMonitoringService networkMonitoringService;
 
-    public NetworkDeviceController(NetworkDeviceService networkDeviceService) {
+    public NetworkDeviceController(NetworkDeviceService networkDeviceService, NetworkMonitoringService networkMonitoringService) {
         this.networkDeviceService = networkDeviceService;
+        this.networkMonitoringService = networkMonitoringService;
     }
 
     @GetMapping
@@ -44,5 +47,10 @@ public class NetworkDeviceController {
     @DeleteMapping("/{id}")
     public void deleteDevice(@PathVariable Long id) {
         networkDeviceService.deleteDevice(id);
+    }
+
+    @PostMapping("/{id}/check")
+    public void checkDevice(@PathVariable Long id) {
+        networkMonitoringService.checkDevice(id);
     }
 }
