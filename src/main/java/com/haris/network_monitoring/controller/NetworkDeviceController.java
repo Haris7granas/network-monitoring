@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 
 @RestController
 @RequestMapping("/api/devices")
+@CrossOrigin(origins = "http://localhost:4200")
 public class NetworkDeviceController {
 
     private final NetworkDeviceService networkDeviceService;

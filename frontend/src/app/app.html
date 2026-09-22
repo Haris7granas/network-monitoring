@@ -1,6 +1,7 @@
 <div class="dashboard">
   <header class="header">
     <h1>Network Monitoring</h1>
+    <p>{{ name }}</p>
     <p>Network Devices Dashboard</p>
   </header>
 
@@ -25,7 +26,9 @@
     <section class="devices">
       <h2>Network Devices</h2>
 
-      <p>No devices loaded yet.</p>
+      @for (device of devices; track device.id) {
+        <li>{{ device.name + " " + device.ipAddress + " " + device.status }}</li>
+      }
     </section>
   </main>
 </div>
