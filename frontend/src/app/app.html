@@ -1,34 +1,71 @@
 <div class="dashboard">
   <header class="header">
+
+  <div class="header-left">
     <h1>Network Monitoring</h1>
     <p>{{ name }}</p>
     <p>Network Devices Dashboard</p>
-  </header>
+  </div>
+
+  <div class="header-right">
+    <p class="live-status">
+      {{ apiConnected() ? '🟢 Live Monitoring' : '🔴 Connection Lost' }}
+    </p>
+    <p class="last-refresh">Last refresh: {{ lastRefresh() | date:'HH:mm:ss' }}</p>
+  </div>
+</header>
 
   <main class="content">
     <section class="summary">
       <div class="card">
         <h2>Total Devices</h2>
-        <p>0</p>
+        <p>{{ devices().length }}</p>
       </div>
 
       <div class="card">
         <h2>Online</h2>
-        <p>0</p>
+        <p>{{ getOnlineDevices() }}</p>
       </div>
 
       <div class="card">
         <h2>Offline</h2>
-        <p>0</p>
+        <p>{{ devices().length - getOnlineDevices() }}</p>
       </div>
     </section>
 
     <section class="devices">
       <h2>Network Devices</h2>
-
-      @for (device of devices; track device.id) {
-        <li>{{ device.name + " " + device.ipAddress + " " + device.status }}</li>
-      }
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>IP Address</th>
+            <th>Type</th>
+            <th>Port</th>
+            <th>Status</th>
+            <th>Response Time</th>
+            <th>Last Checked</th>
+          </tr>
+        </thead>
+        <tbody>
+        @for (device of devices(); track device.id) {
+          <tr>
+            <td>{{ device.name }}</td>
+            <td>{{ device.ipAddress }}</td>
+            <td>{{ device.type }}</td>
+            <td>{{ device.port }}</td>
+            <td>
+              <span [class.status-up]="device.status === 'UP'"
+                    [class.status-down]="device.status === 'DOWN'">
+                {{ device.status }}
+              </span>
+            </td>
+            <td>{{ device.responseTime !== null ? device.responseTime + ' ms' : 'N/A' }}</td>
+            <td>{{ device.lastChecked | date:'dd/MM/yyyy, HH:mm:ss' }}</td>
+          </tr>
+        }
+        </tbody>
+      </table>
     </section>
   </main>
 </div>
